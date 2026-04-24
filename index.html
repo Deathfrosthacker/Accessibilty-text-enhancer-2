@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Accessibility Text Enhancer - Improve readability for dyslexia, ADHD, and visual impairments">
+    <title>A11yText Enhancer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header" role="banner">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4 7V4h3M4 17v3h3M20 7V4h-3M20 17v3h-3M9 9h6v6H9z"/>
+                </svg>
+                <h1>A11yText Enhancer</h1>
+            </div>
+            <p class="tagline">Make text readable. For everyone.</p>
+        </header>
+
+        <main class="main-content" role="main">
+            <!-- Input Section -->
+            <section class="input-section" aria-labelledby="input-heading">
+                <h2 id="input-heading" class="sr-only">Text Input</h2>
+                <div class="input-toolbar">
+                    <button id="btn-sample" class="btn-secondary" type="button">Load Sample Text</button>
+                    <button id="btn-clear" class="btn-secondary" type="button">Clear</button>
+                    <label class="file-input-wrapper">
+                        <input type="file" id="file-input" accept=".txt,.html,.md" aria-label="Upload text file">
+                        <span class="btn-secondary">Upload File</span>
+                    </label>
+                </div>
+                <textarea 
+                    id="text-input" 
+                    placeholder="Paste or type your text here..." 
+                    aria-label="Enter text to enhance"
+                    rows="6"
+                ></textarea>
+                <div class="stats-bar" id="input-stats" aria-live="polite">
+                    <span>Words: <strong id="word-count">0</strong></span>
+                    <span>Reading time: <strong id="read-time">0 min</strong></span>
+                    <span>Grade level: <strong id="grade-level">-</strong></span>
+                </div>
+            </section>
+
+            <!-- Controls Panel -->
+            <section class="controls-panel" aria-labelledby="controls-heading">
+                <h2 id="controls-heading" class="panel-title">Enhancement Controls</h2>
+                
+                <div class="control-group">
+                    <label for="font-select">Font Family</label>
+                    <select id="font-select" aria-label="Select font family">
+                        <option value="system">System Default</option>
+                        <option value="Lexend" selected>Lexend (Cognitive Readability)</option>
+                        <option value="Verdana">Verdana (Screen Optimized)</option>
+                        <option value="Arial">Arial (Standard Sans)</option>
+                        <option value="Comic Sans MS, Comic Sans, cursive">Comic Sans (Distinct Shapes)</option>
+                        <option value="Georgia">Georgia (Serif)</option>
+                        <option value="OpenDyslexic">OpenDyslexic (Dyslexia Specialist)</option>
+                    </select>
+                </div>
+
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="font-size">Size: <span id="font-size-val">18</span>px</label>
+                        <input type="range" id="font-size" min="12" max="32" value="18" aria-label="Font size">
+                    </div>
+                    <div class="control-group">
+                        <label for="line-height">Line Height: <span id="line-height-val">1.6</span></label>
+                        <input type="range" id="line-height" min="1.0" max="3.0" step="0.1" value="1.6" aria-label="Line height">
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="letter-spacing">Letter Spacing: <span id="letter-spacing-val">0.5</span>px</label>
+                        <input type="range" id="letter-spacing" min="0" max="5" step="0.5" value="0.5" aria-label="Letter spacing">
+                    </div>
+                    <div class="control-group">
+                        <label for="word-spacing">Word Spacing: <span id="word-spacing-val">2</span>px</label>
+                        <input type="range" id="word-spacing" min="0" max="10" step="1" value="2" aria-label="Word spacing">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="text-align">Text Alignment</label>
+                    <div class="segmented-control" role="radiogroup" aria-label="Text alignment">
+                        <button class="align-btn active" data-align="left" aria-pressed="true">Left</button>
+                        <button class="align-btn" data-align="center" aria-pressed="false">Center</button>
+                        <button class="align-btn" data-align="right" aria-pressed="false">Right</button>
+                        <button class="align-btn" data-align="justify" aria-pressed="false">Justify</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="contrast-select">Contrast Preset</label>
+                    <select id="contrast-select" aria-label="Select contrast mode">
+                        <option value="default">Default</option>
+                        <option value="high-contrast">High Contrast (Black/White)</option>
+                        <option value="dark">Dark Mode</option>
+                        <option value="sepia">Sepia (Warm)</option>
+                        <option value="blue-light">Blue Light Filter</option>
+                        <option value="custom">Custom Colors</option>
+                    </select>
+                </div>
+
+                <div class="control-row color-controls" id="custom-colors" style="display:none;">
+                    <div class="control-group">
+                        <label for="text-color">Text Color</label>
+                        <input type="color" id="text-color" value="#1a1a1a" aria-label="Text color">
+                    </div>
+                    <div class="control-group">
+                        <label for="bg-color">Background</label>
+                        <input type="color" id="bg-color" value="#fafafa" aria-label="Background color">
+                    </div>
+                </div>
+
+                <div class="control-group toggle-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="bionic-toggle" aria-label="Enable bionic reading">
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-text">Bionic Reading <small>(Highlights word beginnings)</small></span>
+                    </label>
+                    <div class="sub-control" id="bionic-intensity-control" style="display:none;">
+                        <label for="bionic-intensity">Intensity: <span id="bionic-intensity-val">50</span>%</label>
+                        <input type="range" id="bionic-intensity" min="30" max="70" value="50" aria-label="Bionic reading intensity">
+                    </div>
+                </div>
+
+                <div class="control-group toggle-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="tts-toggle" aria-label="Enable text to speech">
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-text">Text to Speech</span>
+                    </label>
+                    <div class="sub-control" id="tts-controls" style="display:none;">
+                        <button id="tts-play" class="btn-icon" aria-label="Play speech">▶</button>
+                        <button id="tts-pause" class="btn-icon" aria-label="Pause speech">⏸</button>
+                        <button id="tts-stop" class="btn-icon" aria-label="Stop speech">⏹</button>
+                        <label class="speed-label">
+                            Speed: <input type="range" id="tts-speed" min="0.5" max="2" step="0.1" value="1" aria-label="Speech speed">
+                            <span id="tts-speed-val">1.0x</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-group toggle-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="highlight-toggle" aria-label="Enable line highlighting">
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-text">Line Focus Guide</span>
+                    </label>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="btn-reset" class="btn-secondary" type="button">Reset Defaults</button>
+                    <button id="btn-save-preset" class="btn-secondary" type="button">Save Preset</button>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section" aria-labelledby="output-heading">
+                <h2 id="output-heading" class="sr-only">Enhanced Text Preview</h2>
+                <div class="output-toolbar">
+                    <span class="preview-label">Live Preview</span>
+                    <div class="export-group">
+                        <button id="btn-export-html" class="btn-secondary" type="button">Export HTML</button>
+                        <button id="btn-export-txt" class="btn-secondary" type="button">Export TXT</button>
+                        <button id="btn-print" class="btn-secondary" type="button">Print</button>
+                    </div>
+                </div>
+                <div 
+                    id="text-output" 
+                    class="text-output" 
+                    role="region" 
+                    aria-label="Enhanced text output"
+                    tabindex="0"
+                >
+                    <p class="placeholder-text">Your enhanced text will appear here...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer" role="contentinfo">
+            <p>Built for accessibility. Free forever. <a href="#" id="about-link">About this tool</a></p>
+        </footer>
+    </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close dialog">&times;</button>
+            <h2 id="modal-title">About A11yText Enhancer</h2>
+            <p>This tool helps make text more readable for people with dyslexia, ADHD, low vision, and other reading differences.</p>
+            <ul>
+                <li><strong>Lexend font</strong> — Designed specifically for cognitive readability</li>
+                <li><strong>Bionic Reading</strong> — Guides the eye by highlighting word stems</li>
+                <li><strong>Full customization</strong> — Because every reader is different</li>
+            </ul>
+            <p>All processing happens in your browser. Your text never leaves your device.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
